@@ -5,4 +5,4 @@ A excel with VBA that able to export content to json and a C# enum class file
  Each sheet will be exported as a json file which's name is the sheet name.
  Still, it will export a .cs file with all enum,so you can use the enum in Unity.
  
- PS:There's no error check in this excel,make sure you fill the right json
+ PS:There's no error check in this excel,make sure you fill the right content
