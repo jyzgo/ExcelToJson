@@ -1,1 +1,272 @@
-Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean) 'ctrl+s _______________Ú    Sheets("dataout").UsedRange.ClearContents '____dataout_out_    Dim s, n, x, y, a, b As Integer 's______sheet__ n_____sheet____sheetheet    Dim asheet As Worksheet    s = 1    n = 11    x = 1: y = 1 'x y___dataout____________±    a = 1: b = 1 'a,b_____________________Í    Dim mainpackID, limit, fun, packxcount As Integer    mainpackID = 1    Dim mainx, mainy As Integer    Dim eventx, eventy As Integer    Dim subx, suby As Integer    Dim limx, limy As Integer    Dim funx, funy As Integer    Dim packx, packy As Integer    Dim taskx, tasky As Integer    Dim tutorialx, tutorialy As Integer    Dim packflag As Integer '________±    Dim subflag As Integer '____________±    Dim substr As String                    packflag = 0    subflag = 1    substr = "["    eventx = 2    eventy = 2    subx = 2    suby = 2    limx = 2    limy = 2    funx = 22 'funid _20__ _____________¡    funy = 2    packx = 2    packy = 2    taskx = 2    tasky = 2    tutorialx = 2    tutorialy = 2            Dim mainxmax As Integer    Dim mainymax As Integer    packx = 2 '____ __________™     Dim packspace As Integer '_______________Ù    packsapce = 0 '__packspace______    Dim subid, eventid, limid, funid As Integer '_____ID _ ___ID ___ID_DD    subid = 1    eventid = 1    limid = 1    funid = 21    Dim taskname As String    Dim packlimid As String    packlimid = ""    Dim packrun As String    packrun = ""        '//---------- output statement    Dim separator As String    separator = Application.PathSeparator        Dim isOutput As Boolean    isOutput = False    For Each asheet In ThisWorkbook.Sheets    Dim deName As String    deName = "ConfEnums"        Dim className As String    className = deName & ".cs"    Dim content As String        Dim fileNames As String        Dim fileNameEnums As String            Dim mainContent As String                        Select Case asheet.Name        Case "dataout"        Case Else            mainContent = ""            isOutput = False                        '//------            Dim keyEnum As String            Dim isOutPutKey As Boolean            isOutPutKey = False            keyEnum = ""            isOutPutKey = False            '//-------------            If Sheets(s).Cells(x, y) <> "DontOutput" Then                isOutput = True            End If                        Sheets("dataout").UsedRange.ClearContents ' //clean all dataout_out sheet            Sheets("dataout").Cells(x, y) = Chr(123)                x = x + 1            Sheets("dataout").Cells(x, 1) = Chr(34) & Sheets(s).Name & Chr(34) & Chr(58) '//sheets's name                x = x + 1                                If isOutput Then                    content = content & Chr(10) & "public enum " & Sheets(s).Name & "Enum" & "{" & Chr(10)                End If                fileNames = fileNames & Chr(34) & Sheets(s).Name & Chr(34) & ","                fileNameEnums = fileNameEnums & Chr(9) & Sheets(s).Name & "," & Chr(10)                                keyEnum = keyEnum & Chr(10) & "public enum Key" & Sheets(s).Name & "Enum" & "{" & Chr(10)                            Sheets("dataout").Cells(x, 2) = Chr(123) ' //left  "{"                x = x + 1                    Do While Sheets(s).Cells(a + 1, b + 1) <> "" ' //loop verticle, when current cell is empty end loop                        Sheets("dataout").Cells(x, 3) = Chr(34) & Sheets(s).Cells(a + 1, 1) & Chr(34) & Chr(58) ' // the left key value                        If isOutput Then                            content = content & Chr(9) & Sheets(s).Cells(a + 1, 1) & Chr(44) & Chr(10)                        End If                            x = x + 1                        Sheets("dataout").Cells(x, 4) = Chr(123) ' // the top key left "{"                            x = x + 1                    '{                                Do While Sheets(s).Cells(a + 1, b + 1) <> "" '//loop verticle, when current cell is empty end loop                                    Sheets("dataout").Cells(x, 5) = Chr(34) & Sheets(s).Cells(1, b + 1) & Chr(34) & Chr(58) & Sheets(s).Cells(a + 1, b + 1) '// each horizontal loop assign value                                        If Sheets(s).Cells(a + 1, b + 2) <> "" Then Sheets("dataout").Cells(x, 6) = Chr(44) '                                                    If (isOutPutKey <> True) Then                                                                                                                keyEnum = keyEnum & Chr(32) & Sheets(s).Cells(1, b + 1) & Chr(44) '& Chr(10)                                                    End If                                                                                                     x = x + 1                                            b = b + 1                                Loop                                 If (isOutPutKey <> True) Then                                    isOutPutKey = True                                    keyEnum = keyEnum & Chr(125) & Chr(10) & "//--------------------->>>" & Chr(10) & Chr(10) & Chr(10) & "//<<<----------------------"                                End If                                        Sheets("dataout").Cells(x, 4) = Chr(125)  '// key's right "}"                    Sheets("dataout").Cells(x, 5) = Chr(44)                    If Sheets(s).Cells(a + 2, b) = "" And Sheets(s).Cells(a + 1, b + 1) = "" Then Sheets("dataout").Cells(x, 5) = ""                        x = x + 1                        a = a + 1                        b = 1                    Loop '//horizontal loop end                If isOutput Then                    content = content & Chr(125)                End If                                                   content = content & keyEnum                  '}                a = 1                b = 1                           Sheets("dataout").Cells(x, 2) = Chr(125)  '//sheet's right "}"            Sheets("dataout").Cells(x, 3) = ","                If Sheets(s).Cells(a + 2, b + 2) = "" Then Sheets("dataout").Cells(x, 3) = ""                x = x + 1            Sheets("dataout").Cells(x, y) = Chr(125)            Sheets("dataout").Cells(x - 1, 3) = ""            x = 1            Dim i As Integer        Dim j As Integer        Dim imaxrows As Integer        Dim imaxcolumn As Integer        imaxrows = 0        Dim str As String        imaxrows = Sheets("dataout").UsedRange.Rows.Count        imaxcolumns = Sheets("dataout").UsedRange.Columns.Count        Dim FilePath As String        Dim FileName As String        FileName = Sheets(s).Name & ".conf"        FilePath = ThisWorkbook.Path        Dim FinalPath As String        Dim Left1 As String        Left1 = Left(FilePath, InStrRev(FilePath, separator) - 1)        FinalPath = Left(FilePath, InStrRev(Left1, separator) - 1) & separator & "StreamingAssets" & separator & "config" & separator & FileName        Open FinalPath For Output As #1        i = 1        j = 1            For i = 1 To imaxrows                For j = 1 To imaxcolumns                    If Sheets("dataout").Cells(i, j) = "" Then str = str & Chr(32) Else: str = str & Sheets("dataout").Cells(i, j)                                        Next                j = 1                 Print #1, str                 str = ""                            Next        Close #1         s = s + 1           '  Sheets(1).Cells(56 + s, 1) = imaxrows           ' Sheets(1).Cells(56 + s, 2) = Sheets(s - 1).Name                End Select    Next    Dim ClassPath As String    ClassPath = ThisWorkbook.Path    ClassPath = Left(ClassPath, InStrRev(ClassPath, separator) - 1) & separator & className    Dim strClass As String    Dim strClassContent As String        strClassContent = "public static class " & deName & Chr(123) & Chr(10) & Chr(9) & "public static readonly string[] fileNames = {" & fileNames & "};" & Chr(10) & Chr(125) & Chr(10)            Dim fileEnums As String    fileEnums = "public enum " & deName & "FileEnum" & Chr(10) & "{" & Chr(10) & fileNameEnums & "}" & Chr(10)    content = strClassContent + fileEnums + content        Open ClassPath For Output As #2    Print #2, content    Close #2    'MsgBox(content)   End Sub
+Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean) 'ctrl+s _______________ú
+    Sheets("dataout").UsedRange.ClearContents '____dataout_out_?
+    Dim s, n, x, y, a, b As Integer 's______sheet__ n_____sheet____sheetheet
+    Dim asheet As Worksheet
+    s = 1
+    n = 11
+    x = 1: y = 1 'x y___dataout____________?±
+    a = 1: b = 1 'a,b_____________________??í
+    Dim mainpackID, limit, fun, packxcount As Integer
+    mainpackID = 1
+    Dim mainx, mainy As Integer
+    Dim eventx, eventy As Integer
+    Dim subx, suby As Integer
+    Dim limx, limy As Integer
+    Dim funx, funy As Integer
+    Dim packx, packy As Integer
+    Dim taskx, tasky As Integer
+    Dim tutorialx, tutorialy As Integer
+    Dim packflag As Integer '________±
+    Dim subflag As Integer '____________±
+    Dim substr As String
+    
+    
+    
+    
+    packflag = 0
+    subflag = 1
+    substr = "["
+    eventx = 2
+    eventy = 2
+    subx = 2
+    suby = 2
+    limx = 2
+    limy = 2
+    funx = 22 'funid _20__ _____________?
+    funy = 2
+    packx = 2
+    packy = 2
+    taskx = 2
+    tasky = 2
+    tutorialx = 2
+    tutorialy = 2
+    
+    
+    Dim mainxmax As Integer
+    Dim mainymax As Integer
+
+    packx = 2 '____ __________??
+    Dim packspace As Integer '_______________ù
+    packsapce = 0 '__packspace______?
+    Dim subid, eventid, limid, funid As Integer '_____ID _ ___ID ___ID_DD
+    subid = 1
+    eventid = 1
+    limid = 1
+    funid = 21
+    Dim taskname As String
+    Dim packlimid As String
+    packlimid = ""
+    Dim packrun As String
+    packrun = ""
+    
+    
+
+
+Application.DefaultWebOptions.Encoding = msoEncodingUTF8
+
+
+
+'//---------- output statement
+
+
+
+
+
+
+    Dim separator As String
+    separator = Application.PathSeparator
+    
+    Dim isOutput As Boolean
+    isOutput = False
+    
+
+For Each asheet In ThisWorkbook.Sheets
+    Dim deName As String
+    deName = "ConfEnums"
+    
+    Dim className As String
+    className = deName & ".cs"
+
+    Dim content As String
+    
+    Dim fileNames As String
+    
+    Dim fileNameEnums As String
+    
+    
+    Dim mainContent As String
+    
+
+    
+    
+    
+    
+
+    Select Case asheet.Name
+        Case "dataout"
+
+        Case Else
+            mainContent = ""
+            isOutput = False
+            
+            '//------
+            Dim keyEnum As String
+            Dim isOutPutKey As Boolean
+            isOutPutKey = False
+            keyEnum = ""
+            isOutPutKey = False
+            '//-------------
+
+            If Sheets(s).Cells(x, y) <> "DontOutput" Then
+                isOutput = True
+            End If
+            
+            Sheets("dataout").UsedRange.ClearContents ' //clean all dataout_out sheet
+            Sheets("dataout").Cells(x, y) = Chr(123)
+                x = x + 1
+            Sheets("dataout").Cells(x, 1) = Chr(34) & Sheets(s).Name & Chr(34) & Chr(58) '//sheets's name
+                x = x + 1
+                
+                If isOutput Then
+                    content = content & Chr(10) & "public enum " & Sheets(s).Name & "Enum" & "{" & Chr(10)
+                End If
+                fileNames = fileNames & Chr(34) & Sheets(s).Name & Chr(34) & ","
+                fileNameEnums = fileNameEnums & Chr(9) & Sheets(s).Name & "," & Chr(10)
+                
+                keyEnum = keyEnum & Chr(10) & "public enum Key" & Sheets(s).Name & "Enum" & "{" & Chr(10)
+                
+            Sheets("dataout").Cells(x, 2) = Chr(123) ' //left  "{"
+                x = x + 1
+                    Do While Sheets(s).Cells(a + 1, b + 1) <> "" ' //loop verticle, when current cell is empty end loop
+                        Sheets("dataout").Cells(x, 3) = Chr(34) & Sheets(s).Cells(a + 1, 1) & Chr(34) & Chr(58) ' // the left key value
+                        If isOutput Then
+                            content = content & Chr(9) & Sheets(s).Cells(a + 1, 1) & Chr(44) & Chr(10)
+                        End If
+                            x = x + 1
+                        Sheets("dataout").Cells(x, 4) = Chr(123) ' // the top key left "{"
+                            x = x + 1
+                    '{
+                                Do While Sheets(s).Cells(a + 1, b + 1) <> "" '//loop verticle, when current cell is empty end loop
+                                    Sheets("dataout").Cells(x, 5) = Chr(34) & Sheets(s).Cells(1, b + 1) & Chr(34) & Chr(58) & Sheets(s).Cells(a + 1, b + 1) '// each horizontal loop assign value
+                                        If Sheets(s).Cells(a + 1, b + 2) <> "" Then Sheets("dataout").Cells(x, 6) = Chr(44) '
+                                                    If (isOutPutKey <> True) Then
+                                                       
+                                                         keyEnum = keyEnum & Chr(32) & Sheets(s).Cells(1, b + 1) & Chr(44) '& Chr(10)
+                                                    End If
+                                                         
+                                            x = x + 1
+                                            b = b + 1
+                                Loop
+                                 If (isOutPutKey <> True) Then
+                                    isOutPutKey = True
+                                    keyEnum = keyEnum & Chr(125) & Chr(10) & "//--------------------->>>" & Chr(10) & Chr(10) & Chr(10) & "//<<<----------------------"
+                                End If
+                    
+                    Sheets("dataout").Cells(x, 4) = Chr(125)  '// key's right "}"
+                    Sheets("dataout").Cells(x, 5) = Chr(44)
+                    If Sheets(s).Cells(a + 2, b) = "" And Sheets(s).Cells(a + 1, b + 1) = "" Then Sheets("dataout").Cells(x, 5) = ""
+                        x = x + 1
+                        a = a + 1
+                        b = 1
+                    Loop '//horizontal loop end
+
+                If isOutput Then
+                    content = content & Chr(125)
+                End If
+            
+
+                   
+                    content = content & keyEnum
+
+      
+            '}
+                a = 1
+                b = 1
+               
+            Sheets("dataout").Cells(x, 2) = Chr(125)  '//sheet's right "}"
+            Sheets("dataout").Cells(x, 3) = ","
+                If Sheets(s).Cells(a + 2, b + 2) = "" Then Sheets("dataout").Cells(x, 3) = ""
+                x = x + 1
+            Sheets("dataout").Cells(x, y) = Chr(125)
+            Sheets("dataout").Cells(x - 1, 3) = ""
+            x = 1
+            Dim i As Integer
+        Dim j As Integer
+        Dim imaxrows As Integer
+        Dim imaxcolumn As Integer
+        imaxrows = 0
+        Dim str As String
+        imaxrows = Sheets("dataout").UsedRange.Rows.Count
+        imaxcolumns = Sheets("dataout").UsedRange.Columns.Count
+
+
+        Dim filepath As String
+
+        Dim FileName As String
+        FileName = Sheets(s).Name & ".conf"
+        filepath = ThisWorkbook.Path
+
+        Dim FinalPath As String
+
+        Dim Left1 As String
+        Left1 = Left(filepath, InStrRev(filepath, separator) - 1)
+        FinalPath = ThisWorkbook.Path & separator & FileName
+        'Left(FilePath, InStrRev(Left1, separator) - 1) & separator & "StreamingAssets" & separator & "config" & separator & FileName
+        
+            str = ""
+            For i = 1 To imaxrows
+                For j = 1 To imaxcolumns
+                If Sheets("dataout").Cells(i, j) = "" Then str = str & Chr(32) Else: str = str & Sheets("dataout").Cells(i, j).Value
+                
+                Next
+            'j = 1
+            str = str & Chr(10)
+            Next
+        
+        Set adodbStream = CreateObject("ADODB.Stream")
+        With adodbStream
+            .Type = 2 'Stream type
+            .Charset = "UTF-8"
+            'or utf-16 etc
+            .Open
+             .WriteText str 'Sheet1.Cells(i, 1).Value
+            .SaveToFile FinalPath, 2 'Save binary data To disk
+        End With
+
+              
+
+
+
+         s = s + 1
+
+       
+        End Select
+    Next
+
+    Dim ClassPath As String
+    ClassPath = ThisWorkbook.Path
+    ClassPath = Left(ClassPath, InStrRev(ClassPath, separator) - 1) & separator & className
+
+    Dim strClass As String
+    Dim strClassContent As String
+    
+    strClassContent = "public static class " & deName & Chr(123) & Chr(10) & Chr(9) & "public static readonly string[] fileNames = {" & fileNames & "};" & Chr(10) & Chr(125) & Chr(10)
+    
+    
+    Dim fileEnums As String
+    fileEnums = "public enum " & deName & "FileEnum" & Chr(10) & "{" & Chr(10) & fileNameEnums & "}" & Chr(10)
+
+    content = strClassContent + fileEnums + content
+    
+    Open ClassPath For Output As #2
+    Print #2, content
+    Close #2
+
+    'MsgBox(content)
+   
+End Sub
+
+
+ 
+
+
