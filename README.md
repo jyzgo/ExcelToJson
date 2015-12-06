@@ -6,3 +6,5 @@ A excel with VBA that able to export content to json and a C# enum class file
  Still, it will export a .cs file with all enum,so you can use the enum in Unity.
  
  PS:There's no error check in this excel,make sure you fill the right content
+ 
+ This excel only generate "ANSI" encoding file,if you want "UTF-8"format, try "AnsiToUtf8.py"
