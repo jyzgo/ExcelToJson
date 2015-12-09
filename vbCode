@@ -213,26 +213,7 @@ For Each asheet In ThisWorkbook.Sheets
         FinalPath = ThisWorkbook.Path & separator & FileName
         'Left(FilePath, InStrRev(Left1, separator) - 1) & separator & "StreamingAssets" & separator & "config" & separator & FileName
         
-            str = ""
-            For i = 1 To imaxrows
-                For j = 1 To imaxcolumns
-                If Sheets("dataout").Cells(i, j) = "" Then str = str & Chr(32) Else: str = str & Sheets("dataout").Cells(i, j).Value
-                
-                Next
-            'j = 1
-            str = str & Chr(10)
-            Next
-        
-        Set adodbStream = CreateObject("ADODB.Stream")
-        With adodbStream
-            .Type = 2 'Stream type
-            .Charset = "UTF-8"
-            'or utf-16 etc
-            .Open
-             .WriteText str 'Sheet1.Cells(i, 1).Value
-            .SaveToFile FinalPath, 2 'Save binary data To disk
-        End With
-
+           '-----------------------------        #If Mac Then           Open FinalPath For Output As #1            For i = 1 To imaxrows                For j = 1 To imaxcolumns                    If Sheets("dataout").Cells(i, j) = "" Then str = str & Chr(32) Else: str = str & Sheets("dataout").Cells(i, j)                                        Next                j = 1                 Print #1, str                 str = ""                            Next            Close #1        #Else                str = ""                For i = 1 To imaxrows                    For j = 1 To imaxcolumns                    If Sheets("dataout").Cells(i, j) = "" Then str = str & Chr(32) Else: str = str & Sheets("dataout").Cells(i, j).Value                                 Next                'j = 1                str = str & Chr(10)                Next                    Set adodbStream = CreateObject("ADODB.Stream")            With adodbStream                .Type = 2 'Stream type                .Charset = "UTF-8"                'or utf-16 etc                .Open                .WriteText str 'Sheet1.Cells(i, 1).Value                .SaveToFile FinalPath, 2 'Save binary data To disk            End With        #End If        '---------------------
               
 
 
